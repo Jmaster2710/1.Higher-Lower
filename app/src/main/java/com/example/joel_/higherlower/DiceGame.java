@@ -94,7 +94,7 @@ public class DiceGame extends AppCompatActivity {
         if (mPreviousRolls.size() != 0) {
             do {
                 diceRoll = mRandom.nextInt(6);
-            } while (diceRoll == mPreviousRolls.get(mPreviousRolls.size() - 1));
+            } while (diceRoll + 1 == mPreviousRolls.get(mPreviousRolls.size() - 1));
         } else
         {
             diceRoll = mRandom.nextInt(6);
@@ -128,6 +128,7 @@ public class DiceGame extends AppCompatActivity {
     private boolean checkWon(int mDiceRoll, boolean mLesser, View view)
     {
         int mLastValue;
+
         if (mPreviousRolls.size() != 0) {
             mLastValue = mPreviousRolls.get(mPreviousRolls.size() - 1);
         } else
@@ -136,7 +137,10 @@ public class DiceGame extends AppCompatActivity {
         }
         if ((mDiceRoll < mLastValue && mLesser) || (mDiceRoll > mLastValue && !mLesser))
         {
-            Snackbar.make(view, mDiceRoll, Snackbar.LENGTH_LONG).setAction("You Won!", null).show();
+            Snackbar snackbar = Snackbar
+                    .make(view, "You won :)", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
             mAmountRight ++;
 
             if (mAmountRight > mHighScore)
@@ -147,13 +151,16 @@ public class DiceGame extends AppCompatActivity {
             return true;
         } else
         {
-           // Snackbar.make(view, mDiceRoll, Snackbar.LENGTH_LONG).setAction("You Lost :(", null).show();
+            Snackbar snackbar = Snackbar
+                    .make(view, "You lost :(", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+
             mPreviousRolls.clear();
             mAmountRight = 0;
             updateScore();
             return false;
         }
-
     }
 
     private void updateScore()
